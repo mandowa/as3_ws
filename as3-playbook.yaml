@@ -1,0 +1,26 @@
+---
+- name: AS3 WS
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars: 
+    uri_method: POST
+
+
+  vars_files:
+    - ../creds/creds.yaml
+
+  tasks:
+  - name: Create a VIP
+    uri:
+      url: https://52.56.155.234/mgmt/shared/appsvcs/declare
+      user: "{{ bigip_user }}"
+      password: "{{ bigip_pass }}"
+      method: "{{ uri_method }}"
+      body: "{{ lookup('file','./create_vs.json') }}"
+      force_basic_auth: yes
+      status_code: 200
+      body_format: json
+      validate_certs: no
+...
